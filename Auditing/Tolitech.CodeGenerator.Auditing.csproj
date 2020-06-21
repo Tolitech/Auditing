@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageIconUrl></PackageIconUrl>
+    <Authors>Tolitech</Authors>
+    <Company>Tolitech</Company>
+    <Product>Tolitech Code Generator</Product>
+    <PackageProjectUrl>https://www.codegenerator.com.br/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tolitech/auditing</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageTags>auditing</PackageTags>
+    <PackageReleaseNotes>More information at http://www.codegenerator.com.br/</PackageReleaseNotes>
+    <Copyright />
+    <Description>Auditing library for Tolitech Code Generator.</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Version>1.0.1</Version>
+    <SignAssembly>false</SignAssembly>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>icon.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Tolitech.CodeGenerator.Domain" Version="1.0.0" />
+  </ItemGroup>
+
+</Project>
