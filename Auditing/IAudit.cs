@@ -6,7 +6,7 @@ namespace Tolitech.CodeGenerator.Auditing
 {
     public interface IAudit
     {
-        void Add(AuditableEntity entity, string sql, object param);
+        void Add(AuditModel model, string sql, object param, params object[] keys);
 
         void Add(EventTypeEnum eventType, Type entityType, string sql, object param, params object[] keys);
 

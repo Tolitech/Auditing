@@ -11,9 +11,9 @@ namespace Tolitech.CodeGenerator.Auditing
             Items = new List<AuditModel>();
         }
 
-        public void Add(AuditableEntity entity, string sql, object param)
+        public void Add(AuditModel model, string sql, object param, params object[] keys)
         {
-            var model = entity.GetAudit();
+            model.Keys = keys;
             model.Sql = sql;
             model.Parameters = param;
 

@@ -10,24 +10,28 @@ namespace Tolitech.CodeGenerator.Auditing
 {
     public abstract class AuditableEntity : Entity
     {
-        private object[] _keys;
+        private bool _started;
         private EventTypeEnum _eventType;
         private IList<AttributeModel> _attributesOld;
         private IList<AttributeModel> _attributesNew;
 
         protected AuditableEntity()
         {
+            _started = false;
             _attributesOld = new List<AttributeModel>();
             _attributesNew = new List<AttributeModel>();
         }
 
-        public void StartAudit(EventTypeEnum eventType, params object[] keys)
+        public void StartAudit(EventTypeEnum eventType)
         {
-            _eventType = eventType;
-            _keys = keys;
+            if (!_started)
+            {
+                _started = true;
+                _eventType = eventType;
 
-            if (eventType == EventTypeEnum.Update || eventType == EventTypeEnum.Delete)
-                _attributesOld = ToAttributeModel(this);
+                if (eventType == EventTypeEnum.Update || eventType == EventTypeEnum.Delete)
+                    _attributesOld = ToAttributeModel(this);
+            }
         }
 
         public void FinishAudit()
@@ -36,7 +40,7 @@ namespace Tolitech.CodeGenerator.Auditing
                 _attributesNew = ToAttributeModel(this);
         }
 
-        public AuditModel GetAudit()
+        public AuditModel Audit()
         {
             var type = this.GetType();
 
@@ -45,7 +49,6 @@ namespace Tolitech.CodeGenerator.Auditing
                 AuditId = Guid.NewGuid(),
                 ClassName = type.Name,
                 Namespace = type.Namespace,
-                Keys = _keys,
                 EventType = _eventType,
                 AttributesDiff = GetDiff()
             };

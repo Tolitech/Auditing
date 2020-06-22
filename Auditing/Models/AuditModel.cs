@@ -8,6 +8,7 @@ namespace Tolitech.CodeGenerator.Auditing.Models
         public AuditModel()
         {
             Keys = new List<object>();
+            AttributesDiff = new List<AttributeDiffModel>();
         }
 
         public Guid AuditId { get; set; }
