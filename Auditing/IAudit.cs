@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using Tolitech.CodeGenerator.Auditing.Models;
 
 namespace Tolitech.CodeGenerator.Auditing
@@ -10,6 +10,6 @@ namespace Tolitech.CodeGenerator.Auditing
 
         void Add(EventTypeEnum eventType, Type entityType, string sql, object param, params object[] keys);
 
-        IList<AuditModel> Items { get; }
+        ConcurrentQueue<AuditModel> Items { get; }
     }
 }

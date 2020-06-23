@@ -46,7 +46,6 @@ namespace Tolitech.CodeGenerator.Auditing
 
             var audit = new AuditModel
             {
-                AuditId = Guid.NewGuid(),
                 ClassName = type.Name,
                 Namespace = type.Namespace,
                 EventType = _eventType,
