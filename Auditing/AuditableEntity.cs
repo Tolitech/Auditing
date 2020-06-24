@@ -48,6 +48,7 @@ namespace Tolitech.CodeGenerator.Auditing
             {
                 ClassName = type.Name,
                 Namespace = type.Namespace,
+                FullName = type.FullName,
                 EventType = _eventType,
                 AttributesDiff = GetDiff()
             };

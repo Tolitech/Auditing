@@ -21,6 +21,8 @@ namespace Tolitech.CodeGenerator.Auditing.Models
 
         public string ClassName { get; set; }
 
+        public string FullName { get; set; }
+
         public string Sql { get; set; }
 
         public IList<AttributeDiffModel> AttributesDiff { get; set; }
@@ -30,7 +32,7 @@ namespace Tolitech.CodeGenerator.Auditing.Models
             get
             {
                 if (_keys.Count > 0)
-                    return string.Join(", ", _keys);
+                    return string.Join(",", _keys);
 
                 return null;
             }
@@ -48,8 +50,6 @@ namespace Tolitech.CodeGenerator.Auditing.Models
         }
 
         public DateTime Time { get { return DateTime.Now; } }
-
-        public string FullName { get { return Namespace + "." + ClassName; } }
 
         public void AddKeys(object key)
         {

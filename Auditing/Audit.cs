@@ -29,6 +29,7 @@ namespace Tolitech.CodeGenerator.Auditing
                 EventType = eventType,
                 ClassName = entityType.Name,
                 Namespace = entityType.Namespace,
+                FullName = entityType.FullName,
                 Sql = sql
             };
 
