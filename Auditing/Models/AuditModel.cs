@@ -30,7 +30,7 @@ namespace Tolitech.CodeGenerator.Auditing.Models
             get
             {
                 if (_keys.Count > 0)
-                    return string.Join(", ", _keys.ToString());
+                    return string.Join(", ", _keys);
 
                 return null;
             }
