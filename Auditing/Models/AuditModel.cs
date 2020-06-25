@@ -27,7 +27,7 @@ namespace Tolitech.CodeGenerator.Auditing.Models
 
         public IList<AttributeDiffModel> AttributesDiff { get; set; }
 
-        public string Keys
+        public string Key
         {
             get
             {
