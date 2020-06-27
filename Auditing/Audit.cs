@@ -59,7 +59,7 @@ namespace Tolitech.CodeGenerator.Auditing
             foreach (Type t in assembly.GetTypes())
             {
                 if (t.IsSubclassOf(typeof(AuditableEntity)))
-                    _availableEntities.Add(assembly.FullName);
+                    _availableEntities.Add(t.FullName);
             }
         }
 
