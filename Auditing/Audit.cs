@@ -18,32 +18,38 @@ namespace Tolitech.CodeGenerator.Auditing
 
         public void Add(AuditModel model, string sql, object param, params object[] keys)
         {
-            foreach (var key in keys)
-                model.AddKeys(key);
+            if (IsEntityEnabled(model.FullName))
+            {
+                foreach (var key in keys)
+                    model.AddKeys(key);
 
-            model.Sql = sql;
-            model.SetParameters(param);
+                model.Sql = sql;
+                model.SetParameters(param);
 
-            Items.Enqueue(model);
+                Items.Enqueue(model);
+            }
         }
 
         public void Add(EventTypeEnum eventType, Type entityType, string sql, object param, params object[] keys)
         {
-            var model = new AuditModel
+            if (IsEntityEnabled(entityType.FullName))
             {
-                EventType = eventType,
-                ClassName = entityType.Name,
-                Namespace = entityType.Namespace,
-                FullName = entityType.FullName,
-                Sql = sql
-            };
+                var model = new AuditModel
+                {
+                    EventType = eventType,
+                    ClassName = entityType.Name,
+                    Namespace = entityType.Namespace,
+                    FullName = entityType.FullName,
+                    Sql = sql
+                };
 
-            foreach (var key in keys)
-                model.AddKeys(key);
+                foreach (var key in keys)
+                    model.AddKeys(key);
 
-            model.SetParameters(param);
+                model.SetParameters(param);
 
-            Items.Enqueue(model);
+                Items.Enqueue(model);
+            }
         }
 
         public ConcurrentQueue<AuditModel> Items { get; }
@@ -65,17 +71,23 @@ namespace Tolitech.CodeGenerator.Auditing
 
         public static void EnableEntitity(string fullName)
         {
-            _entitiesEnabled.Add(fullName);
+            lock (_entitiesEnabled)
+            {
+                _entitiesEnabled.Add(fullName);
+            }
         }
 
         public static void ClearEntities()
         {
-            _entitiesEnabled.Clear();
+            lock (_entitiesEnabled)
+            {
+                _entitiesEnabled.Clear();
+            }
         }
 
         public static bool IsEntityEnabled(string fullName)
         {
-            return _availableEntities.Contains(fullName);
+            return _entitiesEnabled.Contains(fullName);
         }
 
         public static IList<string> GetAvailableEntities()
