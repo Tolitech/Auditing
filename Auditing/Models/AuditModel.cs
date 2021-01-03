@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Tolitech.CodeGenerator.Auditing.Models
 {
@@ -43,7 +44,7 @@ namespace Tolitech.CodeGenerator.Auditing.Models
             get
             {
                 if (_parameters != null)
-                    return JsonSerializer.Serialize(_parameters, new JsonSerializerOptions { IgnoreNullValues = true });
+                    return JsonSerializer.Serialize(_parameters, new JsonSerializerOptions { IgnoreNullValues = true, ReferenceHandler = ReferenceHandler.Preserve });
 
                 return null;
             }
