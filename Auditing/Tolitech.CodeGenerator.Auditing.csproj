@@ -15,7 +15,7 @@
     <Copyright />
     <Description>Auditing library for Tolitech Code Generator.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <SignAssembly>false</SignAssembly>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Tolitech.CodeGenerator.Domain" Version="1.0.0" />
+    <PackageReference Include="Tolitech.CodeGenerator.Domain" Version="1.0.2" />
   </ItemGroup>
 
 </Project>
