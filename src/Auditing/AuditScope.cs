@@ -4,8 +4,8 @@ namespace Tolitech.CodeGenerator.Auditing
 {
     public class AuditScope : IDisposable
     {
-        private AuditableEntity _entity;
-        private EventTypeEnum _eventType;
+        private readonly AuditableEntity _entity;
+        private readonly EventTypeEnum _eventType;
 
         public AuditScope(AuditableEntity entity, EventTypeEnum eventType)
         {
@@ -28,6 +28,7 @@ namespace Tolitech.CodeGenerator.Auditing
         public void Dispose()
         {
             Finish();
+            GC.SuppressFinalize(this);
         }
     }
 }
