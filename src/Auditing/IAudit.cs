@@ -6,10 +6,10 @@ namespace Tolitech.CodeGenerator.Auditing
 {
     public interface IAudit
     {
-        void Add(AuditModel model, string sql, object param, params object[] keys);
+        void Add(AuditInfo model, string sql, object param, params object[] keys);
 
         void Add(EventTypeEnum eventType, Type entityType, string sql, object param, params object[] keys);
 
-        ConcurrentQueue<AuditModel> Items { get; }
+        ConcurrentQueue<AuditInfo> Items { get; }
     }
 }
