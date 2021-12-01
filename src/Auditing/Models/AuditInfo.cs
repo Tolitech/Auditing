@@ -1,34 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Tolitech.CodeGenerator.Auditing.Models
 {
-    public class AuditModel
+    public class AuditInfo
     {
-        private IList<object> _keys;
-        private object _parameters;
+        private readonly IList<object> _keys;
+        private object? _parameters;
 
-        public AuditModel()
+        public AuditInfo()
         {
             _keys = new List<object>();
-            AttributesDiff = new List<AttributeDiffModel>();
+            AttributesDiff = new List<AttributeDiffInfo>();
         }
 
         public EventTypeEnum EventType { get; set; }
 
-        public string Namespace { get; set; }
+        public string? Namespace { get; set; }
 
-        public string ClassName { get; set; }
+        public string? ClassName { get; set; }
 
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
-        public string Sql { get; set; }
+        public string? Sql { get; set; }
 
-        public IList<AttributeDiffModel> AttributesDiff { get; set; }
+        public IList<AttributeDiffInfo> AttributesDiff { get; set; }
 
-        public string Key
+        public string? Key
         {
             get
             {
@@ -39,12 +38,12 @@ namespace Tolitech.CodeGenerator.Auditing.Models
             }
         }
 
-        public string Parameters
+        public string? Parameters
         {
             get
             {
                 if (_parameters != null)
-                    return JsonSerializer.Serialize(_parameters, new JsonSerializerOptions { IgnoreNullValues = true, ReferenceHandler = ReferenceHandler.Preserve });
+                    return JsonSerializer.Serialize(_parameters, new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, ReferenceHandler = ReferenceHandler.Preserve });
 
                 return null;
             }

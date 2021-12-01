@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Tolitech.CodeGenerator.Auditing.Models;
 using Tolitech.CodeGenerator.Domain.Entities;
@@ -12,14 +10,14 @@ namespace Tolitech.CodeGenerator.Auditing
     {
         private bool _started;
         private EventTypeEnum _eventType;
-        private IList<AttributeModel> _attributesOld;
-        private IList<AttributeModel> _attributesNew;
+        private IList<AttributeInfo> _attributesOld;
+        private IList<AttributeInfo> _attributesNew;
 
-        protected AuditableEntity()
+        public AuditableEntity()
         {
             _started = false;
-            _attributesOld = new List<AttributeModel>();
-            _attributesNew = new List<AttributeModel>();
+            _attributesOld = new List<AttributeInfo>();
+            _attributesNew = new List<AttributeInfo>();
         }
 
         public void StartAudit(EventTypeEnum eventType)
@@ -40,11 +38,11 @@ namespace Tolitech.CodeGenerator.Auditing
                 _attributesNew = ToAttributeModel(this);
         }
 
-        public AuditModel Audit()
+        public AuditInfo Audit()
         {
             var type = this.GetType();
 
-            var audit = new AuditModel
+            var audit = new AuditInfo
             {
                 ClassName = type.Name,
                 Namespace = type.Namespace,
@@ -56,7 +54,7 @@ namespace Tolitech.CodeGenerator.Auditing
             return audit;
         }
 
-        private string ToString(object attr)
+        private static string? ToString(object? attr)
         {
             if (attr == null)
                 return null;
@@ -64,9 +62,12 @@ namespace Tolitech.CodeGenerator.Auditing
             return attr.ToString();
         }
 
-        private IList<AttributeModel> ToAttributeModel<TEntity>(TEntity entity)
+        private IList<AttributeInfo> ToAttributeModel<TEntity>(TEntity entity)
         {
-            IList<AttributeModel> items = new List<AttributeModel>();
+            IList<AttributeInfo> items = new List<AttributeInfo>();
+
+            if (entity == null)
+                return items;
 
             var props = entity.GetType().GetProperties();
             foreach (var prop in props)
@@ -81,16 +82,21 @@ namespace Tolitech.CodeGenerator.Auditing
 
                             foreach (var _prop in properties)
                             {
-                                items.Add(new AttributeModel
+                                var objectValue = prop.GetValue(entity);
+
+                                if (objectValue != null)
                                 {
-                                    Name = _prop.Name,
-                                    Value = _prop.GetValue(entity)
-                                });
+                                    items.Add(new AttributeInfo
+                                    {
+                                        Name = $"{prop.Name}.{_prop.Name}",
+                                        Value = _prop.GetValue(objectValue)
+                                    });
+                                }
                             }
                         }
                         else
                         {
-                            items.Add(new AttributeModel
+                            items.Add(new AttributeInfo
                             {
                                 Name = prop.Name,
                                 Value = prop.GetValue(entity)
@@ -103,15 +109,15 @@ namespace Tolitech.CodeGenerator.Auditing
             return items;
         }
 
-        private IList<AttributeDiffModel> GetDiff()
+        private IList<AttributeDiffInfo> GetDiff()
         {
-            var itens = new List<AttributeDiffModel>();
+            var itens = new List<AttributeDiffInfo>();
 
             if (_attributesOld.Count == 0 && _attributesNew.Count > 0)
             {
                 foreach (var attr in _attributesNew)
                 {
-                    itens.Add(new AttributeDiffModel
+                    itens.Add(new AttributeDiffInfo
                     {
                         Name = attr.Name,
                         Old = null,
@@ -123,7 +129,7 @@ namespace Tolitech.CodeGenerator.Auditing
             {
                 foreach (var attr in _attributesOld)
                 {
-                    itens.Add(new AttributeDiffModel
+                    itens.Add(new AttributeDiffInfo
                     {
                         Name = attr.Name,
                         Old = ToString(attr.Value),
@@ -137,7 +143,7 @@ namespace Tolitech.CodeGenerator.Auditing
                 {
                     var attrOld = _attributesOld.FirstOrDefault(x => x.Name == attr.Name);
 
-                    itens.Add(new AttributeDiffModel
+                    itens.Add(new AttributeDiffInfo
                     {
                         Name = attr.Name,
                         Old = ToString(attrOld?.Value),
@@ -151,7 +157,7 @@ namespace Tolitech.CodeGenerator.Auditing
 
                     if (attrNew == null)
                     {
-                        itens.Add(new AttributeDiffModel
+                        itens.Add(new AttributeDiffInfo
                         {
                             Name = attr.Name,
                             Old = ToString(attr.Value),
@@ -192,7 +198,7 @@ namespace Tolitech.CodeGenerator.Auditing
         /// <param name="typeToCheck">type to check</param>
         /// <param name="type">type</param>
         /// <returns>is (true) or (false)</returns>
-        protected bool IsBaseType(Type typeToCheck, Type type)
+        protected bool IsBaseType(Type? typeToCheck, Type type)
         {
             if (typeToCheck == null)
                 return false;
@@ -208,7 +214,7 @@ namespace Tolitech.CodeGenerator.Auditing
         /// </summary>
         /// <param name="typeToCheck">type to check</param>
         /// <returns>is collection (true) or (false)</returns>
-        protected bool IsCollection(Type typeToCheck)
+        protected static bool IsCollection(Type typeToCheck)
         {
             var typeInfo = typeToCheck.GetTypeInfo();
 
