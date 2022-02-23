@@ -37,7 +37,7 @@ namespace Tolitech.CodeGenerator.Auditing
             }
         }
 
-        public void Add(EventTypeEnum eventType, Type entityType, string? sql, object? param, params object?[] keys)
+        public void Add(EventTypeEnum eventType, Type entityType, string? sql, object? param, params object?[]? keys)
         {
             if (IsEntityEnabled(entityType.FullName))
             {
