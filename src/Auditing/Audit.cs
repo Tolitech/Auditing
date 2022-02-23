@@ -15,7 +15,7 @@ namespace Tolitech.CodeGenerator.Auditing
             Items = new ConcurrentQueue<AuditInfo>();
         }
 
-        public void Add(AuditInfo model, string? sql, object? param, params object?[] keys)
+        public void Add(AuditInfo model, string? sql, object? param, params object?[]? keys)
         {
             if (IsEntityEnabled(model.FullName))
             {
